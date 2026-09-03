@@ -9,117 +9,92 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.13.5/dist/cdn.min.js"></script>
     <script>
-        tailwind.config = { theme: { extend: { colors: { avocado: { 50: '#f4f8f3', 100: '#e5eedf', 200: '#cedfc3', 300: '#abca9d', 400: '#84b073', 500: '#5f914d', 600: '#48743b', 700: '#3a5d30', 800: '#304a29', 900: '#283e23', dark: '#1a2e16', flesh: '#e9d77b', seed: '#633918' } }, fontFamily: { sans: ['Inter', 'sans-serif'], } }
+        tailwind.config = { theme: { extend: { colors: { avocado: { 50: '#f4f8f3', 100: '#e5eedf', 200: '#cedfc3', 300: '#abca9d', 400: '#84b073', 500: '#5f914d', 600: '#48743b', 700: '#3a5d30', 800: '#304a29', 900: '#283e23', dark: '#1a2e16', flesh: '#e9d77b', seed: '#633918' } }, fontFamily: { sans: ['Inter', 'sans-serif'], } } } }
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f7faf6; }
-      .bg-avocado-gradient { background: linear-gradient(135deg, #283e23 0%, #48743b 50%, #5f914d 100%); }
+       .bg-avocado-gradient { background: linear-gradient(135deg, #283e23 0%, #48743b 50%, #5f914d 100%); }
     </style>
 </head>
 <body class="text-slate-800 bg-slate-50 min-h-screen pb-12" x-data="avocadoApp()" x-init="initApp()">
 
-    <!-- HEADER -->
     <header class="bg-avocado-gradient text-white shadow-lg sticky top-0 z-30">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-12 h-12 bg-avocado-flesh rounded-2xl flex items-center justify-center text-avocado-dark shadow-inner transform rotate-3">
-                        <i class="fa-solid font-bold text-2xl text-avocado-seed fa-seedling"></i>
-                    </div>
-                    <div>
-                        <h1 class="text-2xl font-bold tracking-tight">Juragan Alpukat</h1>
-                        <p class="text-xs text-avocado-200">Sistem Pencatatan Stok, Kulakan & Balik Modal</p>
-                    </div>
-                </div>
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+                <i class="fa-solid fa-seedling text-2xl text-avocado-flesh"></i>
+                <div><h1 class="text-2xl font-bold">Juragan Alpukat</h1><p class="text-xs text-avocado-200">Sistem Pencatatan Stok, Kulakan & Balik Modal</p></div>
             </div>
         </div>
     </header>
 
-    <!-- ISI UTAMA - INI YANG TADI HILANG -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-6 space-y-6">
+    <main class="max-w-7xl mx-auto px-4 mt-6 space-y-6">
         <!-- BANNER BEP -->
-        <div class="bg-white rounded-3xl p-6 shadow-md border border-slate-100">
-            <h2 class="text-2xl font-extrabold text-slate-800">
-                <template x-if="isBreakEven"> <span>Untung <span class="text-emerald-600" x-text="formatRupiah(stats.labaRugi)"></span> 🎉</span> </template>
-                <template x-if="!isBreakEven"> <span>Kurang <span class="text-amber-600" x-text="formatRupiah(stats.sisaModalHarusKembali)"></span> Lagi</span> </template>
+        <div class="bg-white rounded-3xl p-6 shadow-md border">
+            <h2 class="text-2xl font-extrabold">
+                <template x-if="isBreakEven"><span>Untung <span class="text-emerald-600" x-text="formatRupiah(stats.labaRugi)"></span> 🎉</span></template>
+                <template x-if="!isBreakEven"><span>Kurang <span class="text-amber-600" x-text="formatRupiah(stats.sisaModalHarusKembali)"></span> Lagi</span></template>
             </h2>
+            <div class="w-full bg-slate-200 h-3 rounded-full mt-2"><div class="h-full rounded-full bg-avocado-600" :style="'width: ' + Math.min(stats.persenBEP, 100) + '%'"></div></div>
         </div>
 
-        <!-- 4 CARD METRIK -->
+        <!-- 4 CARD -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs font-semibold text-slate-400">Total Modal Kulakan</p><h3 class="text-2xl font-bold" x-text="formatRupiah(stats.totalModal)"></h3></div>
-            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs font-semibold text-slate-400">Hasil Penjualan</p><h3 class="text-2xl font-bold" x-text="formatRupiah(stats.totalPenjualan)"></h3></div>
-            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs font-semibold text-slate-400">Sisa Stok</p><h3 class="text-2xl font-bold" x-text="stats.sisaStok.toFixed(1) + ' Kg'"></h3></div>
-            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs font-semibold text-slate-400">Stok Afkir</p><h3 class="text-2xl font-bold" x-text="stats.totalAfkir.toFixed(1) + ' Kg'"></h3></div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs text-slate-400">Total Modal Kulakan</p><h3 class="text-2xl font-bold" x-text="formatRupiah(stats.totalModal)"></h3></div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs text-slate-400">Hasil Penjualan</p><h3 class="text-2xl font-bold" x-text="formatRupiah(stats.totalPenjualan)"></h3></div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs text-slate-400">Sisa Stok</p><h3 class="text-2xl font-bold" x-text="stats.sisaStok.toFixed(1) + ' Kg'"></h3></div>
+            <div class="bg-white p-5 rounded-2xl shadow-sm border"><p class="text-xs text-slate-400">Stok Afkir</p><h3 class="text-2xl font-bold text-red-600" x-text="stats.totalAfkir.toFixed(1) + ' Kg'"></h3></div>
         </div>
 
-        <!-- TOMBOL AKSI -->
-        <div class="flex flex-wrap gap-2">
-            <button @click="openModal('penjualan')" class="px-4 py-2.5 bg-avocado-600 text-white rounded-xl font-semibold"><i class="fa-solid fa-cart-plus"></i> + Catat Penjualan</button>
+        <!-- TOMBOL -->
+        <div class="flex gap-2">
+            <button @click="openModal('penjualan')" class="px-4 py-2.5 bg-emerald-600 text-white rounded-xl font-semibold"><i class="fa-solid fa-cart-plus"></i> + Catat Penjualan</button>
             <button @click="openModal('kulakan')" class="px-4 py-2.5 bg-slate-800 text-white rounded-xl font-semibold"><i class="fa-solid fa-truck-ramp-box"></i> + Catat Kulakan</button>
-            <button @click="openModal('afkir')" class="px-4 py-2.5 bg-amber-600 text-white rounded-xl font-semibold"><i class="fa-solid fa-dumpster"></i> + Catat Afkir</button>
+            <button @click="openModal('afkir')" class="px-4 py-2.5 bg-amber-600 text-white rounded-xl font-semibold"><i class="fa-solid fa-trash-can"></i> + Catat Afkir</button>
         </div>
 
-        <!-- CHARTS -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div class="bg-white p-5 rounded-3xl shadow-sm border"><h3 class="font-bold mb-4">Ringkasan Keuangan</h3><div class="h-64"><canvas id="financialChart"></canvas></div></div>
-            <div class="bg-white p-5 rounded-3xl shadow-sm border"><h3 class="font-bold mb-4">Alokasi Stok</h3><div class="h-64"><canvas id="stockChart"></canvas></div></div>
+        <!-- TABEL -->
+        <div class="bg-white rounded-3xl shadow-sm border p-6">
+            <h3 class="font-bold mb-4">Riwayat Penjualan</h3>
+            <table class="w-full text-sm"><thead><tr class="text-left text-slate-500"><th>Tanggal</th><th>Pembeli</th><th>Kg</th><th>Total</th></tr></thead>
+            <tbody><template x-for="item in sales" :key="item.id"><tr class="border-t"><td x-text="formatDate(item.tanggal)"></td><td x-text="item.pembeli"></td><td x-text="item.jumlah + ' Kg'"></td><td x-text="formatRupiah(item.total)"></td></tr></template></tbody>
+            </table>
         </div>
-
     </main>
 
-    <!-- MODAL - SAYA RINGKAS, TAPI INTINYA ADA -->
-    <div x-show="modalOpen" class="fixed inset-0 z-50 bg-slate-900/60 flex items-center justify-center p-4" style="display: none;">
-        <div @click.away="closeModal()" class="bg-white w-full max-w-lg rounded-3xl shadow-2xl p-6">
-            <h3 class="font-bold text-lg mb-4" x-text="'Form ' + modalType"></h3>
-            <form @submit.prevent="modalType === 'penjualan'? submitPenjualan() : modalType === 'kulakan'? submitKulakan() : submitAfkir()">
+    <!-- MODAL -->
+    <div x-show="modalOpen" class="fixed inset-0 z-50 bg-black/60 flex items-center justify-center p-4" style="display: none;">
+        <div @click.away="closeModal()" class="bg-white w-full max-w-lg rounded-2xl shadow-2xl p-6">
+            <h3 class="font-bold text-lg mb-4">Form</h3>
+            <form @submit.prevent="submitPenjualan()">
+                <input type="date" x-model="formPenjualan.tanggal" class="w-full border p-2 rounded mb-2">
                 <input type="number" x-model.number="formPenjualan.jumlah" placeholder="Jumlah Kg" class="w-full border p-2 rounded mb-2">
-                <button type="submit" class="px-5 py-2 bg-avocado-600 text-white rounded-xl">Simpan</button>
+                <input type="number" x-model.number="formPenjualan.hargaPerKg" placeholder="Harga/Kg" class="w-full border p-2 rounded mb-2">
+                <button type="submit" class="px-5 py-2 bg-emerald-600 text-white rounded-xl">Simpan</button>
             </form>
         </div>
     </div>
 
-    <!-- SCRIPT FIREBASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+        import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
         const IS_PREVIEW = false;
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyBbw-HRQLkY9SntKk6IO6xA9JzYz0VqEaE",
-            authDomain: "juragan-apukat.firebaseapp.com",
-            projectId: "juragan-apukat",
-            storageBucket: "juragan-apukat.firebasestorage.app",
-            messagingSenderId: "187107540928",
-            appId: "1:187107540928:web:0502dcc2826d81dde51225"
-        };
-
+        const firebaseConfig = { apiKey: "AIzaSyBbw-HRQLkY9SntKk6IO6xA9JzYz0VqEaE", authDomain: "juragan-apukat.firebaseapp.com", projectId: "juragan-apukat", storageBucket: "juragan-apukat.firebasestorage.app", messagingSenderId: "187107540928", appId: "1:187107540928:web:0502dcc2826d81dde51225" };
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
         function avocadoApp() {
             return {
-                activeTab: 'penjualan', modalOpen: false, modalType: 'penjualan',
-                batches: [], sales: [], afkirLogs: [], finChartObj: null, stockChartObj: null,
-                formPenjualan: { tanggal: new Date().toISOString().split('T')[0], jumlah: null, hargaPerKg: 35000 },
-                formKulakan: { tanggal: new Date().toISOString().split('T')[0], jumlah: null, hargaBeliPerKg: 20000 },
-                formAfkir: { tanggal: new Date().toISOString().split('T')[0], jumlah: null },
-
+                modalOpen: false, batches: [], sales: [], afkirLogs: [],
+                formPenjualan: { tanggal: new Date().toISOString().split('T')[0], pembeli: 'Eceran', jumlah: null, hargaPerKg: 35000 },
                 async initApp() {
-                    if (IS_PREVIEW) { this.loadSampleData(false); }
-                    else { this.listenData(); }
-                    this.$nextTick(() => { this.renderCharts(); });
+                    try {
+                        onSnapshot(query(collection(db, "kulakan"), orderBy("tanggal", "desc")), (s) => { this.batches = s.docs.map(d => ({ id: d.id,...d.data() })); });
+                        onSnapshot(query(collection(db, "penjualan"), orderBy("tanggal", "desc")), (s) => { this.sales = s.docs.map(d => ({ id: d.id,...d.data() })); });
+                        onSnapshot(query(collection(db, "afkir"), orderBy("tanggal", "desc")), (s) => { this.afkirLogs = s.docs.map(d => ({ id: d.id,...d.data() })); });
+                    } catch(e){ console.error("Firebase Error:", e) }
                 },
-                listenData() {
-                    onSnapshot(query(collection(db, "kulakan"), orderBy("tanggal", "desc")), (snapshot) => { this.batches = snapshot.docs.map(doc => ({ id: doc.id,...doc.data() })); this.updateCharts(); });
-                    onSnapshot(query(collection(db, "penjualan"), orderBy("tanggal", "desc")), (snapshot) => { this.sales = snapshot.docs.map(doc => ({ id: doc.id,...doc.data() })); this.updateCharts(); });
-                    onSnapshot(query(collection(db, "afkir"), orderBy("tanggal", "desc")), (snapshot) => { this.afkirLogs = snapshot.docs.map(doc => ({ id: doc.id,...doc.data() })); this.updateCharts(); });
-                },
-                async saveToFirebase(collectionName, data) { await addDoc(collection(db, collectionName), data); },
-                async deleteFromFirebase(collectionName, id) { await deleteDoc(doc(db, collectionName, id)); },
-
+                async saveToFirebase(c, d) { await addDoc(collection(db, c), d); },
                 get stats() {
                     const totalModal = this.batches.reduce((sum, b) => sum + (b.total || 0), 0);
                     const totalStokMasuk = this.batches.reduce((sum, b) => sum + (b.jumlah || 0), 0);
@@ -128,20 +103,15 @@
                     const totalAfkir = this.afkirLogs.reduce((sum, a) => sum + (a.jumlah || 0), 0);
                     const sisaStok = Math.max(0, totalStokMasuk - totalTerjual - totalAfkir);
                     const labaRugi = totalPenjualan - totalModal;
-                    let persenBEP = 0; if (totalModal > 0) { persenBEP = (totalPenjualan / totalModal) * 100; }
-                    const sisaModalHarusKembali = Math.max(0, totalModal - totalPenjualan);
-                    return { totalModal, totalStokMasuk, totalPenjualan, totalTerjual, totalAfkir, sisaStok, labaRugi, persenBEP, sisaModalHarusKembali };
+                    let persenBEP = totalModal > 0? (totalPenjualan / totalModal) * 100 : 0;
+                    return { totalModal, totalPenjualan, totalAfkir, sisaStok, labaRugi, persenBEP, sisaModalHarusKembali: Math.max(0, totalModal - totalPenjualan) };
                 },
                 get isBreakEven() { return this.stats.totalPenjualan >= this.stats.totalModal && this.stats.totalModal > 0; },
-                openModal(type) { this.modalType = type; this.modalOpen = true; },
+                openModal() { this.modalOpen = true; },
                 closeModal() { this.modalOpen = false; },
-                async submitPenjualan() { const total = this.formPenjualan.jumlah * this.formPenjualan.hargaPerKg; await this.saveToFirebase("penjualan", {...this.formPenjualan, total: total}); this.closeModal(); },
-                async submitKulakan() { const total = this.formKulakan.jumlah * this.formKulakan.hargaBeliPerKg; await this.saveToFirebase("kulakan", {...this.formKulakan, total: total}); this.closeModal(); },
-                async submitAfkir() { await this.saveToFirebase("afkir", this.formAfkir); this.closeModal(); },
-                formatRupiah(num) { if (isNaN(num) || num === null) return 'Rp 0'; return 'Rp ' + Math.round(num).toLocaleString('id-ID'); },
-                loadSampleData() { /*...*/ },
-                renderCharts() { /*... KODE CHART SAMA... */ },
-                updateCharts() { this.$nextTick(() => { this.renderCharts(); }); }
+                async submitPenjualan() { const total = this.formPenjualan.jumlah * this.formPenjualan.hargaPerKg; await this.saveToFirebase("penjualan", {...this.formPenjualan, total}); this.closeModal(); },
+                formatRupiah(num) { return 'Rp ' + Math.round(num).toLocaleString('id-ID'); },
+                formatDate(dateStr) { return new Date(dateStr).toLocaleDateString('id-ID'); },
             }
         }
     </script>
